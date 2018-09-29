@@ -15,7 +15,3 @@ app.use(function(req, res, next) {
 })
 
 app.use('/lista', routesApi)
-
-app.listen(8080, function () {
-    console.log(`Servidor rodando na porta http://localhost:8080`)
-})
