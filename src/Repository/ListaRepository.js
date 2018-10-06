@@ -1,23 +1,19 @@
-exports.lista = [
-    {
-        id: 1,
-        nome: "Camiseta Vans",
-        preco: 100.0,
-        tipo: "Camiseta",
-        marca: "Vans"
-    },
-    {
-        id: 2,
-        nome: "Camiseta Diamond",
-        preco: 100.0,
-        tipo: "Camiseta",
-        marca: "Diamond"
-    },
-    {
-        id: 3,
-        nome: "Bermuda Diamond",
-        preco: 100.0,
-        tipo: "Bermuda",
-        marca: "Diamond"
+const Produto = require("./../Models/ListaModel")
+
+exports.getProdutos = () => Produto.find()
+
+exports.getProdutosPeloId = (id) => Produto.find({id: id})
+
+exports.setProduto = (produto) => Produto.create(produto)
+
+exports.updateProduto = (id, data) => {
+    const dados = {
+        id: id,
+        nome: data.nome,
+        tipo: data.tipo,
+        preco: data.preco,
+        marca: data.marca
     }
-]
+
+    return Produto.updateOne({id: id}, data)
+}

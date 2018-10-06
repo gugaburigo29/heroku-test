@@ -5,12 +5,13 @@ exports.getProdutoPeloId = (id) => ListaRepository.lista.filter(res => res.id ==
 exports.insereDados = (dados) => {
     let idIgual = true, id
 
-    while (idIgual) {
-        id = Math.round(Math.random() * 1000)
-        idIgual = ListaRepository.lista.some(res => res.id == id)
-        if (!idIgual){
+    ListaRepository.getProdutos()
+        .then(produtos => {
+            while (idIgual) {
+                id = Math.round(Math.random() * produtos.length)
+                idIgual = produtos.some(produto => produto.id === id)
+            }
             dados.id = id
-            ListaRepository.lista.push(dados)
-        }
-    }
+            ListaRepository.setProduto(dados)
+        })
 }
