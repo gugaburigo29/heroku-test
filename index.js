@@ -20,6 +20,10 @@ app.use(function (req, res, next) {
 
 app.use('/lista', routesApi)
 
+app.get('/', (req, res, next) => {
+    res.redirect('/lista')
+})
+
 app.listen(port, function () {
     console.log(`Servidor rodando na porta http://localhost:8080`)
 })
