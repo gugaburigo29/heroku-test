@@ -1,8 +1,8 @@
-const ListaRepository = require("./../Repository/ListaRepository")
 const ListaService = require("./../Services/ListaService")
+const Produtos = require("./../Models/ListaModel")
 
 exports.getTodosProdutos = (req, res, next) => {
-    ListaRepository.getProdutos()
+    Produtos.find()
         .then((produtos) => {
             res.status(200)
                 .send(produtos)
@@ -18,7 +18,7 @@ exports.insereNaLista = (req, res, next) => {
 }
 
 exports.getProdutoPeloId = (req, res, next) => {
-    ListaRepository.getProdutosPeloId(req.params.id)
+    Produtos.find({id: req.params.id})
         .then(produto => {
             res.send(
                 verificaSePodeRetornarLissta(produto)
@@ -31,7 +31,7 @@ exports.getProdutoPeloId = (req, res, next) => {
 }
 
 exports.atualizaProduto = (req, res, next) => {
-    ListaRepository.updateProduto(req.params.id, req.body)
+    Produtos.updateOne({id: req.params.id}, req.body)
         .then(produto => {
             res.send(produto).status(200)
         })
