@@ -41,6 +41,19 @@ exports.atualizaProduto = (req, res, next) => {
         })
 }
 
+exports.removeProdutoPeloId = (req, res, next) => {
+    Produtos.find({id: req.params.id})
+        .remove()
+        .then(produto => {
+            res.send(
+               produto
+            )
+        })
+        .catch(err => {
+            res.status(500)
+                .send(err)
+        })
+}
 function verificaSePodeRetornarLissta(ListaDeProdutos) {
     return ListaDeProdutos.length > 0 ?
         ListaDeProdutos :
