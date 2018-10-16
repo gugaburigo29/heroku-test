@@ -1,4 +1,4 @@
-const Produto = require("./../Models/ListaModel")
+const Produto = require("../Models/lista.model")
 
 exports.insereDados = (dados) => {
     let idIgual = true, id

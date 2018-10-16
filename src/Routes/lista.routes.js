@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const ListaController = require('./../Controllers/ListaController')
+const ListaController = require('../Controllers/lista.controller')
 
 router.get('/', ListaController.getTodosProdutos)
 router.post('/', ListaController.insereNaLista)

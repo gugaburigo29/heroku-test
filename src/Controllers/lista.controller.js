@@ -1,5 +1,5 @@
-const ListaService = require("./../Services/ListaService")
-const Produtos = require("./../Models/ListaModel")
+const ListaService = require("../Services/lista.service")
+const Produtos = require("../Models/lista.model")
 
 exports.getTodosProdutos = (req, res, next) => {
     Produtos.find()

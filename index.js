@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
-const routesApi = require('./src/Routes/routesApi')
+const listaRoutes = require('./src/Routes/lista.routes')
 const port = process.env.PORT || 8080
 
 // Conexao com o DB
@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.use('/lista', routesApi)
+app.use('/lista', listaRoutes)
 
 app.get('/', (req, res, next) => {
     res.redirect('/lista')
