@@ -5,6 +5,7 @@ const listaSchema = new mongoose.Schema({
     nome: {type: String},
     imagem: {type: String},
     tipo: {type: String},
+    criadoPor: {type: Object},
     preco: {type: Number},
     marca: {type: String}
 })
