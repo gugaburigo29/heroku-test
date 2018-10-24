@@ -34,7 +34,7 @@ exports.pegaUsuarioPeloID = function (req, res, next) {
 
 exports.verificaLogin = function (req, res, next) {
     const {nome, senha} = req.body;
-    if (nome || senha) {
+    if (nome && senha) {
         Usuarios.findOne({nome})
             .then(verificaUsuario)
             .catch(err => res.send(err));
@@ -74,18 +74,26 @@ exports.verificaLogin = function (req, res, next) {
 exports.criaUsuario = function (req, res, next) {
     const {nome, senha, level} = req.body;
 
-    Usuarios.findOne({nome})
-        .then(function (usuario) {
-            if (!usuario) {
-                criaUsuario();
-            } else {
-                res.status(400)
-                    .send({
-                        message: "Usuario já cadastrado",
-                        status: 400
-                    })
-            }
-        })
+    if (nome && senha) {
+        Usuarios.findOne({nome})
+            .then(function (usuario) {
+                if (!usuario) {
+                    criaUsuario();
+                } else {
+                    res.status(400)
+                        .send({
+                            message: "Usuario já cadastrado",
+                            status: 400
+                        })
+                }
+            })
+    } else {
+        res.status(400)
+            .send({
+                message: "Nome ou senha não informado",
+                status: 400
+            })
+    }
 
     function criaUsuario() {
         Usuarios.create({nome, senha, level})
