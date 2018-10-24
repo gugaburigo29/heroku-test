@@ -28,7 +28,7 @@ exports.getUsuario = function (req, res, next) {
         .catch(function (err) {
             res.send(err)
         })
-}
+};
 
 exports.setLogin = function (req, res, next) {
     const {nome, senha} = req.body;
@@ -57,3 +57,34 @@ exports.setLogin = function (req, res, next) {
         }
     }
 };
+
+exports.criarUsuario = function (req, res, next) {
+    const {nome, senha, level} = req.body;
+
+    Usuarios.findOne({nome})
+        .then(function (usuario) {
+            if (!usuario) {
+                criaUsuario(nome, senha, level);
+            } else {
+                res.send({
+                    message: "Usuario já cadastrado"
+                })
+            }
+        })
+
+    function criaUsuario(...dados) {
+        Usuarios.create({nome, senha, level})
+            .then(function (usuario) {
+               res.send({
+                   status: 200,
+                   message: "Usuario criado"
+               }).status(200)
+            })
+            .catch(function (err) {
+                res.send({
+                    status: 500,
+                    message: "Erro interno"
+                }).status(404)
+            });
+    }
+}
