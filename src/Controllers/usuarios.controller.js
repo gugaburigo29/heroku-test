@@ -1,18 +1,20 @@
 const Usuarios = require('../Models/usuario.model');
 
-exports.getUsuarios = function (req, res, next) {
+exports.pegaTodosUsuarios = function (req, res, next) {
     Usuarios.find()
         .then(function (usuarios) {
+
             let usuariosFiltrados = [];
             usuarios.forEach(function (usuario) {
                 const {nome, level = "Não definido", _id} = usuario;
                 usuariosFiltrados.push({nome, level, _id})
             });
+
             res.send(usuariosFiltrados)
         })
 };
 
-exports.getUsuario = function (req, res, next) {
+exports.pegaUsuarioPeloID = function (req, res, next) {
     const {id} = req.params
     Usuarios.find({_id: id})
         .then(function (usuario) {
@@ -30,61 +32,78 @@ exports.getUsuario = function (req, res, next) {
         })
 };
 
-exports.setLogin = function (req, res, next) {
+exports.verificaLogin = function (req, res, next) {
     const {nome, senha} = req.body;
-    Usuarios.findOne({nome})
-        .then(verificaUsuario)
-        .catch(err => res.send(err));
+    if (nome || senha) {
+        Usuarios.findOne({nome})
+            .then(verificaUsuario)
+            .catch(err => res.send(err));
+    } else {
+        res.status(500)
+            .send({
+                status: 500,
+                message: "Senha ou nome nao informado"
+            })
+    }
 
     function verificaUsuario(usuario) {
         if (usuario) {
             if (usuario.senha === senha) {
-                res.send({
-                    status: 200,
-                    message: 'Conectado'
-                }).status(200)
+                res.status(200)
+                    .send({
+                        status: 200,
+                        message: 'Conectado'
+                    })
             } else {
-                res.send({
-                    status: 404,
-                    message: 'Senha incorreta'
-                }).status(404)
+                res.status(404)
+                    .send({
+                        status: 404,
+                        message: 'Senha incorreta'
+                    })
             }
         } else {
-            res.send({
-                status: 404,
-                message: 'Usuario não encontrado'
-            }).status(404)
+            res.status(404)
+                .send({
+                    status: 404,
+                    message: 'Usuario não encontrado'
+                })
         }
     }
 };
 
-exports.criarUsuario = function (req, res, next) {
+exports.criaUsuario = function (req, res, next) {
     const {nome, senha, level} = req.body;
 
     Usuarios.findOne({nome})
         .then(function (usuario) {
             if (!usuario) {
-                criaUsuario(nome, senha, level);
+                criaUsuario();
             } else {
-                res.send({
-                    message: "Usuario já cadastrado"
-                })
+                res.status(400)
+                    .send({
+                        message: "Usuario já cadastrado",
+                        status: 400
+                    })
             }
         })
 
-    function criaUsuario(...dados) {
+    function criaUsuario() {
         Usuarios.create({nome, senha, level})
             .then(function (usuario) {
-               res.send({
-                   status: 200,
-                   message: "Usuario criado"
-               }).status(200)
+                res.status(200)
+                    .send({
+                        status: 200,
+                        message: "Usuario criado",
+                        res: usuario
+                    })
             })
             .catch(function (err) {
-                res.send({
-                    status: 500,
-                    message: "Erro interno"
-                }).status(404)
+                res.status(500)
+                    .send({
+                        status: 500,
+                        message: "Erro interno",
+                        err
+                    })
             });
     }
 }
