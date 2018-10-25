@@ -52,7 +52,8 @@ exports.verificaLogin = function (req, res, next) {
                 res.status(200)
                     .send({
                         status: 200,
-                        message: 'Conectado'
+                        message: 'Conectado',
+                        usuario
                     })
             } else {
                 res.status(404)
